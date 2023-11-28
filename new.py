@@ -1,12 +1,23 @@
-from dash import Dash, dcc, html, Input, Output, dash_table
+from dash import Dash, html, dash_table
 import pandas as pd
+import requests
 
 app = Dash(__name__)
 
-#incorparte the data
-df = pd.read_csv('https://api.fantasynerds.com/v1/nfl/weekly-rankings?apikey=TGQCQW6FFTPQM73EEH89Gformat=')
-print(df.head())
-
+# Fetching data from the API
+try:
+    url = "https://americanfootballapi.p.rapidapi.com/api/american-football/search/brady"
+    headers = {
+        "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",
+        "X-RapidAPI-Host": "americanfootballapi.p.rapidapi.com"
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    df = pd.DataFrame(data)  # Convert JSON data to DataFrame
+    print(df.head())
+except Exception as e:
+    print("Error fetching data:", e)
+    df = pd.DataFrame()  # Creating an empty DataFrame if data fetch fails
 
 app.layout = html.Div([
     html.Div(children='Fantasy Football'),
@@ -14,4 +25,4 @@ app.layout = html.Div([
 ])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run_server(debug=True)
