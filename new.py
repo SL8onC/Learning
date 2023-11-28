@@ -8,12 +8,13 @@ app = Dash(__name__)
 try:
     url = "https://americanfootballapi.p.rapidapi.com/api/american-football/search/brady"
     headers = {
-        "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY",
+        "X-RapidAPI-Key": "92553ecf58msh5e3bfb1d615a421p1bd6cejsne10eac083a7c",
         "X-RapidAPI-Host": "americanfootballapi.p.rapidapi.com"
     }
     response = requests.get(url, headers=headers)
     data = response.json()
     df = pd.DataFrame(data)  # Convert JSON data to DataFrame
+    df.set_index('column_name', inplace=True)
     print(df.head())
 except Exception as e:
     print("Error fetching data:", e)
