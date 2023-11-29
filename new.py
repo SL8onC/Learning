@@ -6,12 +6,12 @@ app = Dash(__name__)
 
 # Fetching data from the API
 try:
-    url = "https://americanfootballapi.p.rapidapi.com/api/american-football/search/mahomes"
-    headers = {
-        "X-RapidAPI-Key": "92553ecf58msh5e3bfb1d615a421p1bd6cejsne10eac083a7c",
-        "X-RapidAPI-Host": "americanfootballapi.p.rapidapi.com"
-    }
-    response = requests.get(url, headers=headers)
+    url = "https://api.football-data.org/v4/matches"
+    # headers = {
+    #     "X-RapidAPI-Key": "92553ecf58msh5e3bfb1d615a421p1bd6cejsne10eac083a7c",
+    #     "X-RapidAPI-Host": "americanfootballapi.p.rapidapi.com"
+    # }
+    response = requests.get(url)
     data = response.json()
     df = pd.DataFrame(data)  # Convert JSON data to DataFrame
     print(df.head())
