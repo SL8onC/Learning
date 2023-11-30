@@ -34,6 +34,24 @@ app.layout = html.Div([
     Input('player-dropdown', 'value')
 )
 
-#run the app
+# create Callback function
+def update_player_info(selected_player_idx):
+    player = players_df.iloc[selected_player_idx]
+    player_details = f"Name: {player['first_name']} {player['last_name']}"
+    height = f"Name: {player['height_feet']}'{player['height_inches']}\"" if player['height_feet'] and player['height_inches'] else "Not Available"
+    #handling null values for player height ^ 
+
+    # Prepare table data and columns
+    table_data = [{
+        'Height': height,
+        'Position': player['position'],
+        'Team': player['team']['full_name'],
+        'Division': player['team']['division']
+    }]
+    columns = [{"name": i, "id":i} for i in table_data[0].keys()]
+
+    return player_details, table_data, columns
+
+
 if __name__ == '__main__':
     app.run_server(debug=True)
