@@ -22,13 +22,16 @@ app.layout = html.Div([
         options=[{'label': player['first_name'] + ' ' + player['last_name'] +'  |  ' + player['position'], 'value':idx } for idx, player in players_df.iterrows()],
         value=237
     ),
-
+    html.Div(children='NBA Player Data'),
     dash_table.DataTable(id = 'player-table')
 ])
 
 # Callbacks
-@callback(
-    Output
+@app.callback(
+    Output('player-details', 'children'),
+    Output('player-table', 'columns'),
+    Output('player-table', 'data'),
+    Input('player-dropdown', 'value')
 )
 
 #run the app
