@@ -24,14 +24,16 @@ app.layout = html.Div([
         value=0
     ),
     html.Div(id = 'player_details'),
-    dash_table.DataTable(id = 'player-table')
+    dash_table.DataTable(
+        id = 'player-table'
+    )
 ])
 
 # Callbacks
 @app.callback(
     Output('player_details', 'children'),
-    Output('player-table', 'columns'),
     Output('player-table', 'data'),
+    Output('player-table', 'columns'),
     Input('player-dropdown', 'value')
 )
 
@@ -39,19 +41,29 @@ app.layout = html.Div([
 def update_player_info(selected_player_idx):
     player = players_df.iloc[selected_player_idx]
     player_details = f"Name: {player['first_name']} {player['last_name']}"
-    height = f"Name: {player['height_feet']}'{player['height_inches']}\"" if player['height_feet'] and player['height_inches'] else "Not Available"
-    #handling null values for player height ^ 
-    # using the f-string as a shorthand for concatenation
+    # handling nan values for height
+    if pd.notna(player['height_feet']) and pd.notna(player['height_inches']):
+        height = f"{player['height_feet']}'{player['height_inches']}\"" 
+    else: 
+        height = "Not Available"
+    
+    print(height)
 
     # Prepare table data and columns
     table_data = [{
-        'Height': height,
         'Position': player['position'],
+        'Height': height,
         'Team': player['team']['full_name'],
-        'Division': player['team']['division']
-        'Division': player['division']
+        'Division': player['team']['division'],
+        'Weight': player['weight_pounds'] if pd.notna(player['weight_pounds']) else "Not Available"
     }]
-    columns = [{"id": i, "name":i} for i in table_data[0].keys()]
+    columns =  columns = [
+        {"name": "Height", "id": "Height"},
+        {"name": "Position", "id": "Position"},
+        {"name": "Team", "id": "Team"},
+        {"name": "Division", "id": "Division"},
+        {"name": "Weight", "id": "Weight"}
+    ]
 
     return player_details, table_data, columns
 
