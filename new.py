@@ -9,7 +9,7 @@ try:
     url = "https://www.balldontlie.io/api/v1/players"
     data = requests.get(url).json() # get the response from the APi endpoint and turn it into a JSON
     players_df = pd.DataFrame(data['data'])  # Convert JSON data to DataFrame
-    print(players_df.head())
+    
 except Exception as e:
     print("Error fetching data:", e)
     df = pd.DataFrame()  # Creating an empty DataFrame if data fetch fails
@@ -46,8 +46,6 @@ def update_player_info(selected_player_idx):
         height = f"{player['height_feet']}'{player['height_inches']}\"" 
     else: 
         height = "Not Available"
-    
-    print(height)
 
     # Prepare table data and columns
     table_data = [{
